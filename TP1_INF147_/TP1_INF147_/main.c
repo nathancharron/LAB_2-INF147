@@ -12,6 +12,7 @@ typedef struct {
 } t_point;
 
 double distance(t_point* pA, t_point* pB);
+double prod_vectoriel(t_point* p0, t_point* p1, t_point* p2);
 
 int main(void)
 {
@@ -36,4 +37,15 @@ double distance(t_point* pA, t_point* pB) {
 	distance = sqrt(((differenceX) * (differenceX)) - ((differenceY) * (differenceY)));
 
 	return distance;
+}
+
+double prod_vectoriel(t_point* p0, t_point* p1, t_point* p2) {
+
+	double vecteurA = p1->posx - p0->posx;
+	double vecteurB = p2->posx - p0->posx;
+	double vecteurC = p1->posy - p0->posy;
+	double vecteurD = p2->posy - p0->posy;
+
+	return vecteurA * vecteurD - vecteurB * vecteurC;
+
 }
