@@ -19,6 +19,8 @@ double distance(t_point* pA, t_point* pB);
 double prod_vectoriel(t_point* p0, t_point* p1, t_point* p2);
 double coord_polaire(t_point* pA, t_point* pB, t_point* href);
 int alea(int min, int max);
+void init_tab_alea(t_point tab_pts[], int taille, int maxx, int maxy);
+int occurence(int tab[], int taille, int celuila);
 
 int main(void)
 {
@@ -72,6 +74,33 @@ double coord_polaire(t_point* pA, t_point* pB, t_point* h_ref) {
 
 int alea(int min, int max) {    //retourne un entier aléatoire dans [min, max]
 	return (rand() % (max - min + 1) + min);
+}
+
+int occurence(t_point tab[],int taille, int posy) {
+
+	for (int i = 0; i < taille; i++) {
+
+		if (tab[i].posy == posy) {
+			return 1;
+		}
+
+	}
+
+	return 0;
+
+}
+
+void init_tab_alea(t_point tab_pts[], int taille, int maxx, int maxy) {
+
+	for (int i = 0; i < taille; i++) {
+		tab_pts[i].posx = alea(1, maxx);
+
+		do {
+			tab_pts[i].posy = alea(1, maxy);
+		} while (occurence(tab_pts, i, tab_pts[i].posy));
+	}
+
+
 }
 
 
