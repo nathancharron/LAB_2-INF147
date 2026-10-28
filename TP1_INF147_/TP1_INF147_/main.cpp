@@ -22,6 +22,7 @@ int alea(int min, int max);
 void init_tab_alea(t_point tab_pts[], int taille, int maxx, int maxy);
 int occurence(int tab[], int taille, int celuila);
 int trouver_pt_minimal(const t_point tab_pts[], int taille);
+t_point placer_pt_reference(t_point tab_pts[], int pos_min);
 
 int main(void)
 {
@@ -124,4 +125,13 @@ int trouver_pt_minimal(const t_point tab_pts[], int taille) {
 
 }
 
+t_point placer_pt_reference(t_point tab_pts[], int pos_min) {
 
+	t_point temp = tab_pts[0];
+	tab_pts[0] = tab_pts[pos_min];
+	tab_pts[pos_min] = temp;
+
+	t_point pointRef = { tab_pts[0].posx, 800 };
+
+	return pointRef;
+}
