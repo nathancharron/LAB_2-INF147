@@ -21,6 +21,7 @@ double coord_polaire(t_point* pA, t_point* pB, t_point* href);
 int alea(int min, int max);
 void init_tab_alea(t_point tab_pts[], int taille, int maxx, int maxy);
 int occurence(int tab[], int taille, int celuila);
+int trouver_pt_minimal(const t_point tab_pts[], int taille);
 
 int main(void)
 {
@@ -100,6 +101,26 @@ void init_tab_alea(t_point tab_pts[], int taille, int maxx, int maxy) {
 		} while (occurence(tab_pts, i, tab_pts[i].posy));
 	}
 
+
+}
+
+int trouver_pt_minimal(const t_point tab_pts[], int taille) {
+
+	int indiceMin = 0;
+
+	for (int i = 1; i < taille; i++) {
+
+
+		if (tab_pts[i].posy < tab_pts[indiceMin].posy) {
+			indiceMin = i;
+		}
+		else if (tab_pts[i].posy == tab_pts[indiceMin].posy && tab_pts[i].posx < tab_pts[indiceMin].posx) {
+			indiceMin = i;
+		}
+
+	}
+
+	return indiceMin;
 
 }
 
