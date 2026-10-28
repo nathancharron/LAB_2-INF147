@@ -23,6 +23,8 @@ void init_tab_alea(t_point tab_pts[], int taille, int maxx, int maxy);
 int occurence(int tab[], int taille, int celuila);
 int trouver_pt_minimal(const t_point tab_pts[], int taille);
 t_point placer_pt_reference(t_point tab_pts[], int pos_min);
+void calcul_coord_polaires(t_point tab_pts[], int taille, t_point * ref);
+void trier_pts(t_point tab_pts[], int taille);
 
 int main(void)
 {
@@ -134,4 +136,29 @@ t_point placer_pt_reference(t_point tab_pts[], int pos_min) {
 	t_point pointRef = { tab_pts[0].posx, 800 };
 
 	return pointRef;
+}
+
+void calcul_coord_polaires(t_point tab_pts[], int taille, t_point* ref) {
+
+	for (int i = 1; i < taille; i++) {
+
+		tab_pts[i].rad = coord_polaire(&tab_pts[0], &tab_pts[i], ref);
+
+		tab_pts[i].dist = distance(&tab_pts[0], &tab_pts[i]);
+		
+	}
+}
+
+void trier_pts(t_point tab_pts[], int taille) {
+
+	double radMin = tab_pts[1].rad;
+	int indiceMin = 0;
+
+	for (int i = 1; i < taille; i++) {
+
+		
+
+
+	}
+
 }
