@@ -140,6 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="tab_points.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\Bureau\INF147_A26_TP1_Enveloppe\affichage.h" />
+    <ClInclude Include="..\..\..\..\..\Bureau\INF147_A26_TP1_Enveloppe\WINBGIM.h" />
+    <ClInclude Include="tab_points.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
