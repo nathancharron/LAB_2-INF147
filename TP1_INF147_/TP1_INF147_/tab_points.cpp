@@ -41,7 +41,7 @@ double coord_polaire(t_point* pA, t_point* pB, t_point* h_ref) {
 
 }
 
-int alea(int min, int max) {    //retourne un entier aléatoire dans [min, max]
+static int alea(int min, int max) {    //retourne un entier aléatoire dans [min, max]
 	return (rand() % (max - min + 1) + min);
 }
 
@@ -92,6 +92,7 @@ int trouver_pt_minimal(const t_point tab_pts[], int taille) {
 
 }
 
+
 t_point placer_pt_reference(t_point tab_pts[], int pos_min) {
 
 	t_point temp = tab_pts[0];
@@ -125,14 +126,10 @@ void trier_pts(t_point tab_pts[], int taille) {
 
 			t_point temp = tab_pts[j];
 
-			if (tab_pts[i].rad > tab_pts[j].rad) {
+			if ((tab_pts[i].rad > tab_pts[j].rad) ||
+				(tab_pts[i].rad == tab_pts[j].rad && tab_pts[i].dist > tab_pts[j].dist)) {
 
-				tab_pts[j] = tab_pts[i];
-				tab_pts[i] = temp;
-
-			}
-			else if (tab_pts[i].rad == tab_pts[j].rad && tab_pts[i].dist > tab_pts[j].dist) {
-
+				
 				tab_pts[j] = tab_pts[i];
 				tab_pts[i] = temp;
 

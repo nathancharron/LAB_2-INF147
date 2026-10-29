@@ -43,7 +43,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -139,13 +139,15 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="affichage.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="tab_points.cpp" />
+    <ClCompile Include="WINBGIM.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Bureau\INF147_A26_TP1_Enveloppe\affichage.h" />
-    <ClInclude Include="..\..\..\..\..\Bureau\INF147_A26_TP1_Enveloppe\WINBGIM.h" />
+    <ClInclude Include="affichage.h" />
     <ClInclude Include="tab_points.h" />
+    <ClInclude Include="WINBGIM.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

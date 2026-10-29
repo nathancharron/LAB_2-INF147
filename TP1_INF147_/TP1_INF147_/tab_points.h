@@ -4,6 +4,7 @@
 #include<stdlib.h>
 #include<math.h>
 #include<time.h>
+#include<assert.h>
 
 typedef struct {
 	int posx, posy;
