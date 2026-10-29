@@ -3,6 +3,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+#include<time.h>
 
 
 
@@ -14,13 +15,14 @@ typedef struct {
 } t_point;
 
 #define PI 3.14159265358979323846
+#define TAILLE 20 //détermine le nombre de points
 
 double distance(t_point* pA, t_point* pB);
 double prod_vectoriel(t_point* p0, t_point* p1, t_point* p2);
 double coord_polaire(t_point* pA, t_point* pB, t_point* href);
 int alea(int min, int max);
 void init_tab_alea(t_point tab_pts[], int taille, int maxx, int maxy);
-int occurence(int tab[], int taille, int celuila);
+int occurence(t_point tab[], int taille, int celuila);
 int trouver_pt_minimal(const t_point tab_pts[], int taille);
 t_point placer_pt_reference(t_point tab_pts[], int pos_min);
 void calcul_coord_polaires(t_point tab_pts[], int taille, t_point * ref);
@@ -29,12 +31,20 @@ void trier_pts(t_point tab_pts[], int taille);
 int main(void)
 {
 
-	
+	t_point tab_pts[TAILLE], h_ref;
+	int pos_pt_min; //position du point minimal dans le tableau
 
+	srand(time(NULL)); //initialise le générateur “rand()” 
 
+	init_tab_alea(tab_pts,TAILLE ,1400, 800);
 
+	pos_pt_min = trouver_pt_minimal(tab_pts, TAILLE);
 
+	h_ref = placer_pt_reference(tab_pts, pos_pt_min);
 
+	calcul_coord_polaires(tab_pts, TAILLE, &h_ref);
+
+	trier_pts(tab_pts, TAILLE);
 
 
 	system("pause");
@@ -70,8 +80,14 @@ double coord_polaire(t_point* pA, t_point* pB, t_point* h_ref) {
 
 	double produit = prod_vectoriel(pA, h_ref, pB);
     
-	if (produit < 0.0) {
-		return (2 * (PI/2 - angle));
+	if (produit > 0.0) {
+		return angle;
+	}
+	else if (produit < 0.0) {
+		return angle + (2 * (PI/2 - angle));
+	}
+	else{
+		return PI/2;
 	}
 	
 }
@@ -151,12 +167,29 @@ void calcul_coord_polaires(t_point tab_pts[], int taille, t_point* ref) {
 
 void trier_pts(t_point tab_pts[], int taille) {
 
-	double radMin = tab_pts[1].rad;
-	int indiceMin = 0;
 
 	for (int i = 1; i < taille; i++) {
 
 		
+
+		for (int j = i + 1; j < taille; j++) {
+
+			t_point temp = tab_pts[j];
+
+			if (tab_pts[i].rad > tab_pts[j].rad) {
+				
+				tab_pts[j] = tab_pts[i];
+				tab_pts[i] = temp;
+				
+			}
+			else if (tab_pts[i].rad == tab_pts[j].rad && tab_pts[i].dist > tab_pts[j].dist) {
+
+				tab_pts[j] = tab_pts[i];
+				tab_pts[i] = temp;
+
+			}
+
+		}
 
 
 	}
