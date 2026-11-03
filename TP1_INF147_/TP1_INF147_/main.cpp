@@ -22,7 +22,7 @@ int main(void)
 	pos_pt_min = trouver_pt_minimal(tab_pts, TAILLE);
 
 	h_ref = placer_pt_reference(tab_pts, pos_pt_min);
-
+	
 	calcul_coord_polaires(tab_pts, TAILLE, &h_ref);
 
 	trier_pts(tab_pts, TAILLE);
