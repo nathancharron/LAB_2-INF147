@@ -4,7 +4,7 @@
 #include "pileslib.h"
 #include <windows.h>
 
-void afficher_pts_en_ordre(t_point tab_pts[], int taille);
+void afficher_pts_en_ordre(t_point tab_pts[], int taille, int mode);
 int algo_Graham_scan(t_point tab_pts[], int nb_pts, t_pile* pile_Graham);
 void affi_resultat_graham(t_pile* pile_Graham);
 
@@ -31,17 +31,21 @@ int main(void)
 	trier_pts(tab_pts, TAILLE);
 
 	mode_graphique();
-	afficher_pts_en_ordre(tab_pts, TAILLE);
+	afficher_pts_en_ordre(tab_pts, TAILLE,0);
 	pause_ecran();
 
 	nettoyer_ecran();
 
+	afficher_pts_en_ordre(tab_pts, TAILLE, 1);
+
 	t_pile pile_Graham;
 
 	pile_Graham = initpile(TAILLE);
+
 	algo_Graham_scan(tab_pts, TAILLE, &pile_Graham);
 	
 	affi_resultat_graham(&pile_Graham);
+
 	pause_ecran();
 
 	free(tab_pts);
@@ -50,13 +54,24 @@ int main(void)
 	return EXIT_SUCCESS;
 }
 
-void afficher_pts_en_ordre(t_point tab_pts[], int taille)
+void afficher_pts_en_ordre(t_point tab_pts[], int taille, int mode)
 {
+	if (mode == 0)
+	{
 	for (int i = 0; i < taille; i++)
 	{
 		tab_pts[i].position = i;
 		dessiner_pt(tab_pts[i].posx, tab_pts[i].posy, i);
 		dessiner_lig(tab_pts[0].posx, tab_pts[0].posy, tab_pts[i].posx, tab_pts[i].posy);
+	}
+	}
+	if (mode == 1)
+	{
+		for (int i = 0; i < taille; i++)
+		{
+			tab_pts[i].position = i;
+			dessiner_pt(tab_pts[i].posx, tab_pts[i].posy, i);
+		}
 	}
 }
 
@@ -121,32 +136,36 @@ int algo_Graham_scan(t_point tab_pts[], int nb_pts, t_pile* pile_Graham) {
 
 void affi_resultat_graham(t_pile* pile_Graham) {
 
-	printf("Nombre de points dans la pile : %d", pile_Graham->taille);
+	printf("Les %d points-contour sont:",(pile_Graham->sommet)+1);
 
 	t_point pt_fin;
-	pt_fin = pile_Graham->points[pile_Graham->sommet];
+	t_point p0;
+	t_point p1;
 
-	pop(pile_Graham, &pile_Graham->points[pile_Graham->sommet]);
+	pop(pile_Graham, &p0);
 
-	printf("/n Position du sommet: %d",(pile_Graham->sommet)+1);
+	pt_fin = p0;
+
+	printf("\n%d", pt_fin.position);
 
 	while (!vide(pile_Graham)) {
-		pop(pile_Graham, &pile_Graham->points[pile_Graham->sommet]);
+
+		pop(pile_Graham, &p1);
+
+		printf(" -> %d",p1.position);
+
 		dessiner_lig(
-			pile_Graham->points[pile_Graham->sommet].posx, pile_Graham->points[pile_Graham->sommet].posy,
-			pile_Graham->points[pile_Graham->sommet-1].posx, pile_Graham->points[pile_Graham->sommet-1].posy);
+			p0.posx, p0.posy,
+			p1.posx, p1.posy);
 
-		printf("%d -> ", (pile_Graham->sommet) - 1);
-
-
-		pile_Graham->points[pile_Graham->sommet] = pile_Graham->points[pile_Graham->sommet - 1];
+		p0 = p1;
 
 	}
-
+	
 	dessiner_lig(
-		pile_Graham->points[pile_Graham->sommet].posx, pile_Graham->points[pile_Graham->sommet].posy,
+		p0.posx, p0.posy,
 		pt_fin.posx, pt_fin.posy);
 
-	printf("Numero pt_fin: %d ",TAILLE-1);
+	printf(" -> %d\n", pt_fin.position);
 
 }
