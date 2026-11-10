@@ -2,6 +2,7 @@
 #include "affichage.h"
 #include "winbgim.h"
 #include "pileslib.h"
+#include "interactions.h"
 #include <windows.h>
 
 void afficher_pts_en_ordre(t_point tab_pts[], int taille, int mode);
@@ -14,35 +15,54 @@ int main(void)
 	t_point *tab_pts = NULL;
 	t_point h_ref;
 	int pos_pt_min; //position du point minimal dans le tableau
+	int mode;
+	int nb_pts;
 
 	srand(time(NULL)); //initialise le générateur “rand()” 
 
-	tab_pts = (t_point*)malloc(TAILLE * sizeof(t_point));
-	assert(tab_pts);
+	
 
-	init_tab_alea(tab_pts,TAILLE ,1400, 800);
+	mode = demander_mode();
 
-	pos_pt_min = trouver_pt_minimal(tab_pts, TAILLE);
+	if (mode == MODE_ALEA) {
+		nb_pts = TAILLE;
+
+		tab_pts = (t_point*)malloc(nb_pts * sizeof(t_point));
+		assert(tab_pts);
+
+		init_tab_alea(tab_pts, nb_pts, 1400, 800);
+	}
+	else if (mode == MODE_FICHIER) {
+
+		FILE*fichier = choisir_fichier();
+
+		tab_pts = lire_points(fichier, &nb_pts);
+
+	}
+
+	
+
+	pos_pt_min = trouver_pt_minimal(tab_pts, nb_pts);
 
 	h_ref = placer_pt_reference(tab_pts, pos_pt_min);
 	
-	calcul_coord_polaires(tab_pts, TAILLE, &h_ref);
+	calcul_coord_polaires(tab_pts, nb_pts, &h_ref);
 
-	trier_pts(tab_pts, TAILLE);
+	trier_pts(tab_pts, nb_pts);
 
 	mode_graphique();
-	afficher_pts_en_ordre(tab_pts, TAILLE,0);
+	afficher_pts_en_ordre(tab_pts, nb_pts,0);
 	pause_ecran();
 
 	nettoyer_ecran();
 
-	afficher_pts_en_ordre(tab_pts, TAILLE, 1);
+	afficher_pts_en_ordre(tab_pts, nb_pts, 1);
 
 	t_pile pile_Graham;
 
-	pile_Graham = initpile(TAILLE);
+	pile_Graham = initpile(nb_pts);
 
-	algo_Graham_scan(tab_pts, TAILLE, &pile_Graham);
+	algo_Graham_scan(tab_pts, nb_pts, &pile_Graham);
 	
 	affi_resultat_graham(&pile_Graham);
 

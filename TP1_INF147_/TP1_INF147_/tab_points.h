@@ -18,6 +18,9 @@ typedef struct {
 
 #define PI 3.14159265358979323846
 #define TAILLE 20 //détermine le nombre de points
+#define MODE_ALEA 1
+#define MODE_FICHIER 2
+#define FFLUSH() while (getchar() != '\n')
 
 double distance(t_point* pA, t_point* pB);
 double prod_vectoriel(t_point* p0, t_point* p1, t_point* p2);
