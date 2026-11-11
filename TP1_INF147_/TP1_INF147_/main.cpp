@@ -6,8 +6,9 @@
 #include <windows.h>
 
 void afficher_pts_en_ordre(t_point tab_pts[], int taille, int mode);
-int algo_Graham_scan(t_point tab_pts[], int nb_pts, t_pile* pile_Graham);
+int algo_Graham_scan(t_point tab_pts[], int nb_pts, t_pile* pile_Graham, int mode);
 void affi_resultat_graham(t_pile* pile_Graham);
+double simulation_moyenne(int nb_pts, int nb_tests);
 
 int main(void)
 {
@@ -18,9 +19,9 @@ int main(void)
 	int mode;
 	int nb_pts;
 
-	srand(time(NULL)); //initialise le générateur “rand()” 
+	FILE* f_log;
 
-	
+	srand(time(NULL)); //initialise le générateur “rand()” 
 
 	mode = demander_mode();
 
@@ -38,6 +39,23 @@ int main(void)
 
 		tab_pts = lire_points(fichier, &nb_pts);
 
+	}
+	else if(mode == MODE_SIMULATION){
+
+		f_log = fopen("excel", "w");
+		assert(f_log);
+
+		for (int i = 5; i <= 200; i += 5)
+		{
+			double moyenne = simulation_moyenne(i, 10000);
+
+			printf("%d %.2f\n", i, moyenne);
+			fprintf(f_log, "%d %lf\n", i, moyenne);
+		}
+
+		fclose(f_log);
+
+		return EXIT_SUCCESS;
 	}
 
 	
@@ -62,7 +80,7 @@ int main(void)
 
 	pile_Graham = initpile(nb_pts);
 
-	algo_Graham_scan(tab_pts, nb_pts, &pile_Graham);
+	algo_Graham_scan(tab_pts, nb_pts, &pile_Graham, 1);
 	
 	affi_resultat_graham(&pile_Graham);
 
@@ -95,7 +113,7 @@ void afficher_pts_en_ordre(t_point tab_pts[], int taille, int mode)
 	}
 }
 
-int algo_Graham_scan(t_point tab_pts[], int nb_pts, t_pile* pile_Graham) {
+int algo_Graham_scan(t_point tab_pts[], int nb_pts, t_pile* pile_Graham, int mode_aff) {
 
 	//Empiler le point - minimal p0 dans la pile_Graham.
 	push(pile_Graham, tab_pts[0]);
@@ -104,10 +122,13 @@ int algo_Graham_scan(t_point tab_pts[], int nb_pts, t_pile* pile_Graham) {
 	//Empiler le point p2 dans la pile_Graham(ces 3 points forment le premier segment).
 	push(pile_Graham, tab_pts[2]);
 
+	if (mode_aff == 1) 
+	{
 	//Affichage : dessiner une ligne de p0 à p1 et de p1 à p2, suivi d’un délai - écran(eg. 300 msec.).
 	dessiner_lig(tab_pts[0].posx, tab_pts[0].posy, tab_pts[1].posx, tab_pts[1].posy);
 	dessiner_lig(tab_pts[1].posx, tab_pts[1].posy, tab_pts[2].posx, tab_pts[2].posy);
 	Sleep(300);
+	}
 
 	t_point pB;
 	t_point pA;
@@ -128,10 +149,13 @@ int algo_Graham_scan(t_point tab_pts[], int nb_pts, t_pile* pile_Graham) {
 		{
 			//-Dépiler le point sommet(pB) de la pile_Graham(ce point n’est pas dans l’enveloppe).
 			pop(pile_Graham, &pB);
-			//- Affichage : effacer la ligne qui relie les points pA – pB, suivi d’un petit délai - écran.
-			effacer_lig(pA.posx, pA.posy, pB.posx, pB.posy);
-			Sleep(100);
-			//- Fin Si
+			if (mode_aff == 1)
+			{
+				//- Affichage : effacer la ligne qui relie les points pA – pB, suivi d’un petit délai - écran.
+				effacer_lig(pA.posx, pA.posy, pB.posx, pB.posy);
+				Sleep(100);
+				//- Fin Si
+			}
 		}
 		
 		
@@ -145,9 +169,11 @@ int algo_Graham_scan(t_point tab_pts[], int nb_pts, t_pile* pile_Graham) {
 	}
 			//- Empiler le point suivant pi dans la pile_Graham.
 			push(pile_Graham, pi);
-			//- Affichage : dessiner une ligne de pB à pi, suivi d’un délai - écran
-			dessiner_lig(pB.posx, pB.posy, pi.posx, pi.posy);
-	
+			if (mode_aff == 1)
+			{
+				//- Affichage : dessiner une ligne de pB à pi, suivi d’un délai - écran
+				dessiner_lig(pB.posx, pB.posy, pi.posx, pi.posy);
+			}
 		//- Fin Pour
 	}
 		//- Retourner le nombre d’éléments dans la pile_Graham.
@@ -189,3 +215,40 @@ void affi_resultat_graham(t_pile* pile_Graham) {
 	printf(" -> %d\n", pt_fin.position);
 
 }
+
+double simulation_moyenne(int nb_pts, int nb_tests) 
+{
+	t_pile pile_Graham;       //la pile-solution de l’enveloppe
+	t_point* tab_pts = NULL;  //le tableau dynamique des points
+	t_point h_ref = { 0 };    //le point de référence horizontal
+	int p_min;                //la position du point-minimal p0
+	int nb_pts_tot = 0;       //le nb. total de points-enveloppe
+
+
+	tab_pts = (t_point*)malloc(nb_pts * sizeof(t_point));
+	assert(tab_pts);
+
+	for(int i = 0; i<nb_tests; i++)
+	{
+		pile_Graham = initpile(nb_pts);
+
+		init_tab_alea(tab_pts, nb_pts, MAX_X, MAX_Y);
+
+		p_min = trouver_pt_minimal(tab_pts, nb_pts);
+
+		h_ref = placer_pt_reference(tab_pts, p_min);
+
+		calcul_coord_polaires(tab_pts, nb_pts, &h_ref);
+
+		trier_pts(tab_pts, nb_pts);
+
+		nb_pts_tot += algo_Graham_scan(tab_pts, nb_pts, &pile_Graham, 0);
+
+		liberer_pile(&pile_Graham);
+	}
+
+	free(tab_pts);
+
+	return (double)nb_pts_tot / nb_tests;
+}
+

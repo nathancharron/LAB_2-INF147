@@ -13,7 +13,7 @@ int demander_mode(void) {
 	
 
 
-	while (scanf("%d", &valide) != 1 || (valide != 1 && valide != 2)) {
+	while (scanf("%d", &valide) != 1 || (valide != 1 && valide != 2 && valide!=3)) {
 
 		FFLUSH();
 

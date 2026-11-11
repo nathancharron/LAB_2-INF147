@@ -20,6 +20,7 @@ typedef struct {
 #define TAILLE 20 //détermine le nombre de points
 #define MODE_ALEA 1
 #define MODE_FICHIER 2
+#define MODE_SIMULATION 3
 #define FFLUSH() while (getchar() != '\n')
 
 double distance(t_point* pA, t_point* pB);
