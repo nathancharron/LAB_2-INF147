@@ -14,7 +14,7 @@
 #include "interactions.h"
 
 /**************************************************************************************************************/
-//Demandera a l'utilisateur le mode. Retourne 1 ou 2
+//Demandera a l'utilisateur le mode. Retourne 1,2,ou 3
 int demander_mode(void) {
 
 	int valide;
@@ -45,7 +45,7 @@ int demander_mode(void) {
 }
 
 /**************************************************************************************************************/
-//Demande a l'utilisateur le fichier voulu. Retourne le nom du fichier
+//Demande a l'utilisateur le fichier voulu. Retourne le pointeur vers le fichier ouvert
 FILE* choisir_fichier(void) {
 
 	char nom_fich[100];

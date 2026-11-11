@@ -199,7 +199,7 @@ int algo_Graham_scan(t_point tab_pts[], int nb_pts, t_pile* pile_Graham, int mod
 	{
 		dessiner_lig(tab_pts[0].posx, tab_pts[0].posy, tab_pts[1].posx, tab_pts[1].posy);
 		dessiner_lig(tab_pts[1].posx, tab_pts[1].posy, tab_pts[2].posx, tab_pts[2].posy);
-		Sleep(300);
+		delai_ecran(300);
 	}
 
 	t_point pB; // Point au sommet de la pile
