@@ -16,7 +16,7 @@ int main(void)
 	t_point *tab_pts = NULL;
 	t_point h_ref;
 	int pos_pt_min; //position du point minimal dans le tableau
-	int mode;
+	int mode; //Mode choisi par l'utilisateur
 	int nb_pts;
 
 	FILE* f_log;
@@ -25,18 +25,22 @@ int main(void)
 
 	mode = demander_mode();
 
+	//Si on choisi ce mode (1), on a 20 pts
 	if (mode == MODE_ALEA) {
 		nb_pts = TAILLE;
 
+		//On defini tab_pts comme tableau dynamique
 		tab_pts = (t_point*)malloc(nb_pts * sizeof(t_point));
 		assert(tab_pts);
 
 		init_tab_alea(tab_pts, nb_pts, 1400, 800);
 	}
+	//Sinon le nb_pts depend de celui du fichier
 	else if (mode == MODE_FICHIER) {
 
+		//On choisi le fichier
 		FILE*fichier = choisir_fichier();
-
+		//On lit le fichier
 		tab_pts = lire_points(fichier, &nb_pts);
 
 	}
@@ -59,31 +63,39 @@ int main(void)
 	}
 
 	
-
+	//Trouver le point ayant la position minimale
 	pos_pt_min = trouver_pt_minimal(tab_pts, nb_pts);
 
+	//Placer le point de reference a partir du pt minimal
 	h_ref = placer_pt_reference(tab_pts, pos_pt_min);
 	
 	calcul_coord_polaires(tab_pts, nb_pts, &h_ref);
 
+	//Trier les points selon leurs angles polaires
 	trier_pts(tab_pts, nb_pts);
 
+	/*Initialiser le mode graphique et afficher les points avec
+	leurs lignes et numeros*/
 	mode_graphique();
 	afficher_pts_en_ordre(tab_pts, nb_pts,0);
 	pause_ecran();
 
+
 	nettoyer_ecran();
 
+	//Affiche les points en tri sans les lignes
 	afficher_pts_en_ordre(tab_pts, nb_pts, 1);
 
+	//Initialise la pile pour l'algorithme de Graham
 	t_pile pile_Graham;
-
 	pile_Graham = initpile(nb_pts);
 
 	algo_Graham_scan(tab_pts, nb_pts, &pile_Graham, 1);
 	
+	//On affiche les resultat de l'algorithme de Graham
 	affi_resultat_graham(&pile_Graham);
 
+	//Mettre programme en pause pour visualiser le resultat
 	pause_ecran();
 
 	free(tab_pts);
@@ -94,20 +106,25 @@ int main(void)
 
 void afficher_pts_en_ordre(t_point tab_pts[], int taille, int mode)
 {
+	// Mode 0 : afficher les points et tracer les lignes entre le premier point et les autres
 	if (mode == 0)
 	{
 	for (int i = 0; i < taille; i++)
 	{
 		tab_pts[i].position = i;
+		// Dessiner le point avec son numéro correspondant
 		dessiner_pt(tab_pts[i].posx, tab_pts[i].posy, i);
+		// Tracer une ligne entre le premier point et le point courant
 		dessiner_lig(tab_pts[0].posx, tab_pts[0].posy, tab_pts[i].posx, tab_pts[i].posy);
 	}
 	}
+	// Mode 1 : afficher uniquement les points, sans tracer de lignes
 	if (mode == 1)
 	{
 		for (int i = 0; i < taille; i++)
 		{
 			tab_pts[i].position = i;
+			// Dessiner le point avec son numéro correspondant
 			dessiner_pt(tab_pts[i].posx, tab_pts[i].posy, i);
 		}
 	}
