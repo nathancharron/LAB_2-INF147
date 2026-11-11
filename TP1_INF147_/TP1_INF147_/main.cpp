@@ -102,7 +102,7 @@ int main(void)
 		{
 			double moyenne = simulation_moyenne(i, 10000); // Moyenne des points de l'enveloppe
 
-			printf("%d %.2f\n", i, moyenne);
+			printf("%d pts avec une moyenne de : %.2f\n", i, moyenne);
 			fprintf(f_log, "%d %lf\n", i, moyenne);
 		}
 		// Fermer le fichier

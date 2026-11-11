@@ -1,15 +1,15 @@
 
 /************************************************************************/
 /* INF147 - TP1 : Calcul de l'enveloppe convexe                         */
-/* Auteur : Nathan Charron-Galarneau                                    */
-/* Date : 11 novembre 2026                                              */
+/* Auteur : Nathan Charron-Galarneau et Gregory Osorio Rivera           */
+/* Date : Automne 2026                                                  */
 /*                                                                      */
-/* Ce module contient les fonctions permettant de gérer une pile       */
+/* Ce module contient les fonctions permettant de gérer une pile        */
 /* dynamique de points. Il permet d'initialiser et de libérer une pile, */
 /* d'ajouter ou de retirer des points, ainsi que de consulter les       */
 /* éléments au sommet de celle-ci.                                      */
 /*                                                                      */
-/* La pile est utilisée pour conserver les points de l'enveloppe       */
+/* La pile est utilisée pour conserver les points de l'enveloppe        */
 /* convexe lors du parcours de Graham.                                  */
 /************************************************************************/
 
