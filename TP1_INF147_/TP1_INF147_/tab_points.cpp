@@ -1,5 +1,19 @@
+
+/**************************************************************************************************************/
+/* INF147 - TP1 : Calcul de l'enveloppe convexe                                                               */
+/* Auteur : Nathan Charron-Galarneau et Gregory Osorio Rivera                                                 */
+/* Date : Automne 2026                                                                                        */
+/*                                                                                                            */
+/* Ce module contient les fonctions permettant de manipuler un tableau de points. Il permet de calculer la    */
+/* distance entre deux points, le produit vectoriel et les coordonnées polaires.                              */
+/*                                                                                                            */
+/* Il permet également de générer des points aléatoires, de trouver le point minimal et de trier les points   */
+/* selon leurs angles polaires afin de préparer le calcul de l'enveloppe convexe.                             */
+/**************************************************************************************************************/
+
 #include "tab_points.h"
 
+/**************************************************************************************************************/
 //On calcule la distance entre deux points
 double distance(t_point* pA, t_point* pB) {
 
@@ -11,6 +25,7 @@ double distance(t_point* pA, t_point* pB) {
 	return dist;
 }
 
+/**************************************************************************************************************/
 //On calcule le produit vectoriel a l'aide de 3 points
 double prod_vectoriel(t_point* p0, t_point* p1, t_point* p2) {
 
@@ -23,6 +38,7 @@ double prod_vectoriel(t_point* p0, t_point* p1, t_point* p2) {
 
 }
 
+/**************************************************************************************************************/
 //Calcule la l'angle polaire et la retourne des points A et B
 double coord_polaire(t_point* pA, t_point* pB, t_point* h_ref) {
 
@@ -50,10 +66,12 @@ double coord_polaire(t_point* pA, t_point* pB, t_point* h_ref) {
 
 }
 
+/**************************************************************************************************************/
 static int alea(int min, int max) {    //retourne un entier aléatoire dans [min, max]
 	return (rand() % (max - min + 1) + min);
 }
 
+/**************************************************************************************************************/
 //Fonction qui determine si un nombre revient plusieurs fois
 int occurence(t_point tab[], int taille, int posy) {
 
@@ -69,6 +87,7 @@ int occurence(t_point tab[], int taille, int posy) {
 
 }
 
+/**************************************************************************************************************/
 //Initialise tout les points du tableau aleatoirement
 void init_tab_alea(t_point tab_pts[], int taille, int maxx, int maxy) {
 
@@ -81,9 +100,9 @@ void init_tab_alea(t_point tab_pts[], int taille, int maxx, int maxy) {
 		} while (occurence(tab_pts, i, tab_pts[i].posy));
 	}
 
-
 }
 
+/**************************************************************************************************************/
 //Permet de trouver le point avec le posy le plus petit
 int trouver_pt_minimal(const t_point tab_pts[], int taille) {
 
@@ -91,7 +110,6 @@ int trouver_pt_minimal(const t_point tab_pts[], int taille) {
 
 	for (int i = 1; i < taille; i++) {
 
-		
 		if (tab_pts[i].posy < tab_pts[indiceMin].posy) {
 			indiceMin = i;
 		}
@@ -106,12 +124,13 @@ int trouver_pt_minimal(const t_point tab_pts[], int taille) {
 
 }
 
-/*Avec le pt_minimal, on permute le[0] 
+/**************************************************************************************************************/
+/*Avec le pt_minimal, on permute le[0]
 du tableau pour avoir le pt de reference*/
 t_point placer_pt_reference(t_point tab_pts[], int pos_min) {
 
 	//On cree des variables temporaraires
-	t_point temp = tab_pts[0]; 
+	t_point temp = tab_pts[0];
 	tab_pts[0] = tab_pts[pos_min];
 	tab_pts[pos_min] = temp;
 
@@ -121,6 +140,7 @@ t_point placer_pt_reference(t_point tab_pts[], int pos_min) {
 	return pointRef;
 }
 
+/**************************************************************************************************************/
 //On calcule les coord. polaires de chacun des points
 void calcul_coord_polaires(t_point tab_pts[], int taille, t_point* ref) {
 
@@ -133,13 +153,12 @@ void calcul_coord_polaires(t_point tab_pts[], int taille, t_point* ref) {
 	}
 }
 
+/**************************************************************************************************************/
 //Tri les points (ordre croissant) par rapport a leur angle polaire
 void trier_pts(t_point tab_pts[], int taille) {
 
 
 	for (int i = 1; i < taille; i++) {
-
-
 
 		for (int j = i + 1; j < taille; j++) {
 
@@ -150,14 +169,13 @@ void trier_pts(t_point tab_pts[], int taille) {
 			if ((tab_pts[i].rad > tab_pts[j].rad) ||
 				(tab_pts[i].rad == tab_pts[j].rad && tab_pts[i].dist > tab_pts[j].dist)) {
 
-				
+
 				tab_pts[j] = tab_pts[i];
 				tab_pts[i] = temp;
 
 			}
 
 		}
-
 
 	}
 
